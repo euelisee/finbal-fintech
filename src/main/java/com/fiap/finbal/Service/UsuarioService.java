@@ -40,14 +40,20 @@ public class UsuarioService {
     }
 
     public void deletarUsuario(Long id) {
-        if (!repository.existsById(id)) {
-            throw new RuntimeException("Usuário não encontrado para exclusão");
-        }
-        repository.deleteById(id);
+        repository.findById(id)
+                .ifPresentOrElse(
+                        u -> repository.deleteById(id),
+                        () -> {
+                            throw new RuntimeException("Usuário não encontrado para exclusão");
+                        });
     }
 
     public Usuario save(Usuario usuario) {
         return repository.save(usuario);
+    }
+
+    public Usuario criarUsuario(Usuario usuarioAna) {
+        return repository.save(usuarioAna);
     }
 
 }
