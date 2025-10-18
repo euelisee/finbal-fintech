@@ -31,3 +31,17 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Logs, Compilação e Sistema ###
+*.log
+*.swp
+*~
+*.bak
+*.class
+
+### Arquivos de Teste ###
+/surefire-reports/
+/failsafe-reports/
+
+###Credenciais###
+application*.properties
