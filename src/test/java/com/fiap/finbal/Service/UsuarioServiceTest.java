@@ -117,8 +117,6 @@ public class UsuarioServiceTest {
         verify(repository, times(1)).save(usuarioAna);
     }
 
-    // No UsuarioServiceTest.java
-
     @Test
     @DisplayName("Deve lançar RuntimeException ao tentar atualizar um usuário que não existe")
     void naoDeveAtualizarUsuarioInexistente() {
@@ -128,8 +126,6 @@ public class UsuarioServiceTest {
         }, "Deve lançar RuntimeException quando o usuário não for encontrado");
         verify(repository, never()).save(any(Usuario.class));
     }
-
-    // No UsuarioServiceTest.java
 
     @Test
     @DisplayName("Deve deletar um usuário pelo ID se ele existir")
