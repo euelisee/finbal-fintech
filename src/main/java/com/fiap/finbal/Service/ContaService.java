@@ -1,4 +1,4 @@
-package com.fiap.finbal.Service;
+package com.fiap.finbal.service;
 
 public class ContaService {
     

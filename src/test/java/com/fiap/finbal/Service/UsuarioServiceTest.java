@@ -1,8 +1,8 @@
-package com.fiap.finbal.Service;
+package com.fiap.finbal.service;
 
-import com.fiap.finbal.Model.Usuario;
-import com.fiap.finbal.Repository.UsuarioRepository;
-import com.fiap.finbal.Service.UsuarioService;
+import com.fiap.finbal.model.Usuario;
+import com.fiap.finbal.repository.UsuarioRepository;
+import com.fiap.finbal.service.UsuarioService;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

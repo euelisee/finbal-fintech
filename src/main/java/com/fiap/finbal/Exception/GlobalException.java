@@ -1,4 +1,4 @@
-package com.fiap.finbal.Exception;
+package com.fiap.finbal.exception;
 
 
 import org.springframework.http.HttpStatus;
@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.fiap.finbal.DTO.MensagemResponseDTO;
+import com.fiap.finbal.dto.MensagemResponseDTO;
 
 @RestControllerAdvice
 public class GlobalException {

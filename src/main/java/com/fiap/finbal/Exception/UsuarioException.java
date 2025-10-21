@@ -1,4 +1,4 @@
-package com.fiap.finbal.Exception;
+package com.fiap.finbal.exception;
 
 
 public class UsuarioException extends RuntimeException {

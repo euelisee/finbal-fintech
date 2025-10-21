@@ -1,4 +1,4 @@
-package com.fiap.finbal.Model;
+package com.fiap.finbal.model;
 
 public class Conta {
     
