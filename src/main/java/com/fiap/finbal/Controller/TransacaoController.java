@@ -1,4 +1,4 @@
-package com.fiap.finbal.Controller;
+package com.fiap.finbal.controller;
 
 public class TransacaoController {
     

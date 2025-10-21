@@ -1,4 +1,4 @@
-package com.fiap.finbal.DTO;
+package com.fiap.finbal.dto;
 
 import org.springframework.http.HttpStatus;
 import com.fasterxml.jackson.annotation.JsonInclude;

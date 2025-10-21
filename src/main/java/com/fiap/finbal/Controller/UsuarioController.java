@@ -1,4 +1,4 @@
-package com.fiap.finbal.Controller;
+package com.fiap.finbal.controller;
 
 import java.util.List;
 
@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fiap.finbal.DTO.MensagemResponseDTO;
-import com.fiap.finbal.Exception.UsuarioException;
-import com.fiap.finbal.Model.Usuario;
-import com.fiap.finbal.Service.UsuarioService;
+import com.fiap.finbal.dto.MensagemResponseDTO;
+import com.fiap.finbal.exception.UsuarioException;
+import com.fiap.finbal.model.Usuario;
+import com.fiap.finbal.service.UsuarioService;
 
 @RestController
 @RequestMapping("/api")

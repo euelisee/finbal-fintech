@@ -1,4 +1,4 @@
-package com.fiap.finbal.Model;
+package com.fiap.finbal.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
