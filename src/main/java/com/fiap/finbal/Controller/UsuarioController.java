@@ -2,6 +2,7 @@ package com.fiap.finbal.controller;
 
 import java.util.List;
 
+import org.springframework.dao.DataIntegrityViolationException; // ⭐️ NOVO IMPORT ⭐️
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin; 
@@ -42,15 +43,30 @@ public class UsuarioController {
                 .orElseThrow(() -> new UsuarioException("Usuário não encontrado"));
         return ResponseEntity.status(HttpStatus.OK).body(usuario);
     }
-
     @PostMapping("/usuarios")
     public ResponseEntity<MensagemResponseDTO> criarUsuario(@RequestBody Usuario usuario) {
-        Usuario novoUsuario = service.save(usuario);
-        MensagemResponseDTO resposta = new MensagemResponseDTO(
-                HttpStatus.CREATED,
-                "Usuário cadastrado com sucesso!",
-                novoUsuario);
-        return ResponseEntity.status(HttpStatus.CREATED).body(resposta);
+        try {
+            Usuario novoUsuario = service.save(usuario);
+            MensagemResponseDTO resposta = new MensagemResponseDTO(
+                    HttpStatus.CREATED,
+                    "Usuário cadastrado com sucesso!",
+                    novoUsuario);
+            return ResponseEntity.status(HttpStatus.CREATED).body(resposta);
+            
+        } catch (DataIntegrityViolationException e) {
+            MensagemResponseDTO erro = new MensagemResponseDTO(
+                    HttpStatus.CONFLICT,
+                    "Erro de cadastro: CPF ou E-mail já existem. Tente com outros dados.",
+                    null);
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(erro);
+            
+        } catch (RuntimeException e) {
+            MensagemResponseDTO erro = new MensagemResponseDTO(
+                    HttpStatus.BAD_REQUEST, 
+                    e.getMessage(), 
+                    null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
+        }
     }
 
     @PutMapping("/usuarios/{id}")
@@ -79,10 +95,10 @@ public class UsuarioController {
         } catch (RuntimeException e) {
             MensagemResponseDTO erro = new MensagemResponseDTO(
                     HttpStatus.NOT_FOUND,
-                    e.getMessage(), // <-- Linha que estava faltando o restante do código
+                    e.getMessage(), 
                     null);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(erro);
         }
     }
 
-} 
+}

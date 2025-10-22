@@ -12,7 +12,7 @@ public class Pessoa {
     @Column(name = "SOBRENOME")
     private String sobrenome;
 
-    @Column(name = "EMAIL")
+    @Column(name = "EMAIL", nullable = true)
     private String email;
 
     @Column(name = "TELEFONE")

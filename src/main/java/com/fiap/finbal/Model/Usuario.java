@@ -2,6 +2,8 @@ package com.fiap.finbal.model;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import jakarta.persistence.*;
 
 @Table(name = "TB_USUARIO")
@@ -15,10 +17,13 @@ public class Usuario extends Pessoa {
 
     @Column(name = "SENHA")
     private String senha;
-    @Column(name = "CPF")
+    @Column(name = "CPF", nullable = true)
     private String cpf;
     @Column(name = "DATA_CRIACAO")
     private LocalDate dataCriacao = LocalDate.now();
+    @Column(name = "DATA_NASCIMENTO", nullable = true) 
+    @JsonFormat(pattern = "dd-MM-yyyy")
+    private LocalDate dataNascimento;
 
     public Long getId() {
         return id;
@@ -44,4 +49,12 @@ public class Usuario extends Pessoa {
     public void setDataCriacao(LocalDate dataCriacao) {
         this.dataCriacao = dataCriacao;
     }
+    public LocalDate getDataNascimento() {
+        return dataNascimento;
+    }
+    public void setDataNascimento(LocalDate dataNascimento) {
+        this.dataNascimento = dataNascimento;
+    }
+
+
 }

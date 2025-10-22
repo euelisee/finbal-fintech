@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.fiap.finbal.model.Usuario;
 import com.fiap.finbal.repository.UsuarioRepository;
+import com.fiap.finbal.exception.UsuarioException; 
 
 @Service
 public class UsuarioService {
@@ -28,32 +29,42 @@ public class UsuarioService {
     public Usuario atualizarUsuario(Long id, Usuario usuarioAtualizado) {
         return repository.findById(id)
                 .map(usuarioExistente -> {
-                    usuarioExistente.setNome(usuarioAtualizado.getNome());
-                    usuarioExistente.setSobrenome(usuarioAtualizado.getSobrenome());
-                    usuarioExistente.setEmail(usuarioAtualizado.getEmail());
-                    usuarioExistente.setSenha(usuarioAtualizado.getSenha());
-                    usuarioExistente.setTelefone(usuarioAtualizado.getTelefone());
-                    usuarioExistente.setCpf(usuarioAtualizado.getCpf());
+                    if (usuarioAtualizado.getNome() != null) {
+                        usuarioExistente.setNome(usuarioAtualizado.getNome());
+                    }
+                    if (usuarioAtualizado.getSobrenome() != null) {
+                        usuarioExistente.setSobrenome(usuarioAtualizado.getSobrenome());
+                    }
+                    if (usuarioAtualizado.getEmail() != null) {
+                        usuarioExistente.setEmail(usuarioAtualizado.getEmail());
+                    }
+                
+                    String novaSenha = usuarioAtualizado.getSenha();
+                    if (novaSenha != null && !novaSenha.isEmpty() && !novaSenha.equals("********")) {
+                        usuarioExistente.setSenha(novaSenha);
+                    }
+                    
+                    if (usuarioAtualizado.getTelefone() != null) {
+                        usuarioExistente.setTelefone(usuarioAtualizado.getTelefone());
+                    }
+                    if (usuarioAtualizado.getCpf() != null) {
+                        usuarioExistente.setCpf(usuarioAtualizado.getCpf());
+                    }
+                    if (usuarioAtualizado.getDataNascimento() != null) {
+                         usuarioExistente.setDataNascimento(usuarioAtualizado.getDataNascimento());
+                    }
+
                     return repository.save(usuarioExistente);
                 })
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+                .orElseThrow(() -> new UsuarioException("Usuário não encontrado para atualização"));
     }
-
     public void deletarUsuario(Long id) {
-        repository.findById(id)
-                .ifPresentOrElse(
-                        u -> repository.deleteById(id),
-                        () -> {
-                            throw new RuntimeException("Usuário não encontrado para exclusão");
-                        });
+        if (!repository.existsById(id)) {
+            throw new UsuarioException("Usuário não encontrado para deleção");
+        }
+        repository.deleteById(id);
     }
-
     public Usuario save(Usuario usuario) {
         return repository.save(usuario);
     }
-
-    public Usuario criarUsuario(Usuario usuarioAna) {
-        return repository.save(usuarioAna);
-    }
-
 }
