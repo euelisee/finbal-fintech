@@ -3,25 +3,31 @@ package com.fiap.finbal.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fiap.finbal.model.Categoria;
 import jakarta.persistence.*;
-import com.fiap.finbal.model.Usuario;
+import com.fiap.finbal.model.Conta;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
+@Table(name = "TB_TRANSACAO")
+@Entity
 public class Transacao {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name="USUARIO_ID")
-    private com.fiap.finbal.model.Usuario usuario;
+    @ManyToOne
+    @JoinColumn(name = "CONTA_ID")
+    private Conta conta;
+
+    @Column(name= "TIPO")
+    private String tipo;
 
     @Column(name = "VALOR")
     private Double valor;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name="CATEGORIA")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "CATEGORIA")
     private Categoria categoria;
 
     @Column(name="DATA")
@@ -31,8 +37,10 @@ public class Transacao {
 
     public Long getId() {return id;}
     public void setId(Long id) {this.id = id;}
-    public Usuario getUsuario() {return usuario;}
-    public void setUsuario(Usuario usuario) {this.usuario = usuario;}
+    public Conta getConta() {return conta;}
+    public void setConta(Conta conta) {this.conta = conta;}
+    public String getTipo() {return tipo;}
+    public void setTipo(String tipo) {this.tipo = tipo;}
     public Double getValor() {return valor;}
     public void setValor(Double valor) {this.valor = valor;}
     public Categoria getCategoria() {return categoria;}
