@@ -1,12 +1,12 @@
-package com.fiap.finbal.service;
+package com.fiap.finbal.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.fiap.finbal.model.Usuario;
-import com.fiap.finbal.repository.UsuarioRepository;
+import com.fiap.finbal.Model.Usuario;
+import com.fiap.finbal.Repository.UsuarioRepository;
 import com.fiap.finbal.exception.UsuarioException; 
 
 @Service
