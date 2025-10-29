@@ -1,14 +1,15 @@
-package com.fiap.finbal.model;
+package com.fiap.finbal.Model;
 
 import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import com.fiap.finbal.Model.Conta;
 import jakarta.persistence.*;
 
 @Table(name = "TB_USUARIO")
 @Entity
-public class Usuario extends Pessoa {
+public class Usuario extends com.fiap.finbal.model.Pessoa {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +25,9 @@ public class Usuario extends Pessoa {
     @Column(name = "DATA_NASCIMENTO", nullable = true) 
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate dataNascimento;
+
+    @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Conta conta;
 
     public Long getId() {
         return id;
