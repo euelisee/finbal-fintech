@@ -1,6 +1,7 @@
 package com.fiap.finbal.service;
 
 
+import com.fiap.finbal.Service.ContaService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,17 +13,25 @@ import java.util.Optional;
 import com.fiap.finbal.repository.TransacaoRepository;
 import com.fiap.finbal.model.Transacao;
 import com.fiap.finbal.model.Categoria;
-import com.fiap.finbal.model.Conta;
-import com.fiap.finbal.repository.ContaRepository;
+import com.fiap.finbal.Model.Conta;
+import com.fiap.finbal.Repository.ContaRepository;
 
 
 
 @Service
 public class TransacaoService {
+
+    private final TransacaoRepository transacaoRepository;
+    private final ContaRepository contaRepository;
+    private final ContaService contaService;
+
+
     @Autowired
-    private TransacaoRepository transacaoRepository;
-    @Autowired
-    private ContaRepository contaRepository;
+    public TransacaoService(TransacaoRepository transacaoRepository,  ContaRepository contaRepository, ContaService contaService) {
+        this.transacaoRepository = transacaoRepository;
+        this.contaRepository = contaRepository;
+        this.contaService = contaService;
+    }
 
     public Transacao salvar(Transacao transacao) {
         return transacaoRepository.save(transacao);
@@ -45,7 +54,7 @@ public class TransacaoService {
     public List<Transacao> ListarTransacoes() {return transacaoRepository.findAll();}
     public Optional<Transacao> buscarPorId(Long id) {return transacaoRepository.findById(id);}
 
-
+    //ajustar a string RECEITA e DESPESA para um enum (evitar erro de escrita)
     @Transactional
     public String registrarTransacao(Transacao transacao, Conta conta) {
         if (transacao.getTipo() == "RECEITA"){
@@ -57,8 +66,13 @@ public class TransacaoService {
         }
     }
     private String executarReceita(Transacao transacao, Long contaId) {
-        Conta conta = contaRepository.findById(contaId).get(); //
-        conta.setSaldo(conta.getSaldo() + (transacao.getValor()));
+        Optional<Conta> contaOptional = contaRepository.findById(contaId);
+        if (contaOptional.isEmpty()) {
+            return "ERRO: Conta não encontrada";
+        }
+        Conta conta = contaOptional.get();
+
+        conta.setSaldo(conta.getSaldo().add(transacao.getValor()));
         contaRepository.save(conta);
         transacao.setConta(conta);
         transacaoRepository.save(transacao);
@@ -66,12 +80,19 @@ public class TransacaoService {
     }
 
     private String executarDespesa(Transacao transacao, Long contaId) {
-        Conta conta = contaRepository.findById(contaId).get();
+        Optional<Conta> contaOptional = this.contaService.buscarContaPorId(contaId);
+        if (contaOptional.isEmpty()) {
+            return "ERRO: Conta não encontrada.";
+        }
+        Conta conta = contaOptional.get();
 
-        if (conta.getSaldo().compareTo(transacao.getValor()) < 0){return "Saldo insuficiente";}
+        if (conta.getSaldo().compareTo(transacao.getValor()) < 0) {
+            return "Saldo insuficiente";
+        }
 
-        conta.setSaldo(conta.getSaldo() - (transacao.getValor()));
+        conta.setSaldo(conta.getSaldo().subtract(transacao.getValor()));
         contaRepository.save(conta);
+        transacao.setConta(conta);
         transacaoRepository.save(transacao);
         return "Despesa adicionada com sucesso";
     }
