@@ -1,9 +1,10 @@
 package com.fiap.finbal.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fiap.finbal.model.Categoria;
 import jakarta.persistence.*;
 import com.fiap.finbal.Model.Conta;
+import com.fiap.finbal.Model.TipoTransacao;
+import com.fiap.finbal.model.Categoria;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -21,8 +22,9 @@ public class Transacao {
     @JoinColumn(name = "CONTA_ID")
     private Conta conta;
 
+    @Enumerated(EnumType.STRING)
     @Column(name= "TIPO")
-    private String tipo;
+    private TipoTransacao tipo;
 
     @Column(name = "VALOR")
     private BigDecimal valor;
@@ -40,8 +42,8 @@ public class Transacao {
     public void setId(Long id) {this.id = id;}
     public Conta getConta() {return conta;}
     public void setConta(Conta conta) {this.conta = conta;}
-    public String getTipo() {return tipo;}
-    public void setTipo(String tipo) {this.tipo = tipo;}
+    public TipoTransacao getTipo() {return tipo;}
+    public void setTipo(TipoTransacao tipo) {this.tipo = tipo;}
     public BigDecimal getValor() {return valor;}
     public void setValor(BigDecimal valor) {this.valor = valor;}
     public Categoria getCategoria() {return categoria;}

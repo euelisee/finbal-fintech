@@ -1,6 +1,7 @@
 package com.fiap.finbal.service;
 
 
+import com.fiap.finbal.DTO.TransacaoRequestDTO;
 import com.fiap.finbal.Service.ContaService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import com.fiap.finbal.repository.TransacaoRepository;
 import com.fiap.finbal.model.Transacao;
 import com.fiap.finbal.model.Categoria;
 import com.fiap.finbal.Model.Conta;
+import com.fiap.finbal.Model.TipoTransacao;
 import com.fiap.finbal.Repository.ContaRepository;
 
 
@@ -33,10 +35,6 @@ public class TransacaoService {
         this.contaService = contaService;
     }
 
-    public Transacao salvar(Transacao transacao) {
-        return transacaoRepository.save(transacao);
-    }
-
     public List<Transacao> buscarPorCategoria(String categoria) {
 
         Categoria categoriaEnum;
@@ -52,18 +50,40 @@ public class TransacaoService {
     }
 
     public List<Transacao> ListarTransacoes() {return transacaoRepository.findAll();}
+
     public Optional<Transacao> buscarPorId(Long id) {return transacaoRepository.findById(id);}
 
-    //ajustar a string RECEITA e DESPESA para um enum (evitar erro de escrita)
+
     @Transactional
-    public String registrarTransacao(Transacao transacao, Conta conta) {
-        if (transacao.getTipo() == "RECEITA"){
-            return executarReceita(transacao, conta.getId());
-        } else if (transacao.getTipo() == "DESPESA"){
-            return executarDespesa(transacao, conta.getId());
-        } else {
-            return "ERRO: Tipo de transação desconhecido.";
+    public Transacao registrarTransacao(TransacaoRequestDTO dto) {
+        Long contaId = dto.contaId();
+        if (contaId == null) {
+            throw new RuntimeException("ERRO: O 'contaId' não foi fornecido na requisição.");
         }
+
+        Transacao novaTransacao = new Transacao();
+        novaTransacao.setTipo(dto.tipo());
+        novaTransacao.setValor(dto.valor());
+        novaTransacao.setCategoria(dto.categoria());
+        novaTransacao.setData(dto.data());
+
+        String resultado;
+        switch (novaTransacao.getTipo()) {
+            case RECEITA:
+                resultado = executarReceita(novaTransacao, contaId);
+                break;
+            case DESPESA:
+                resultado = executarDespesa(novaTransacao, contaId);
+                break;
+            default:
+                throw new RuntimeException("ERRO: Tipo de transação desconhecido.");
+        }
+
+        if (resultado.startsWith("ERRO") || resultado.equals("Saldo insuficiente")) {
+            throw new RuntimeException(resultado);
+        }
+
+        return novaTransacao;
     }
     private String executarReceita(Transacao transacao, Long contaId) {
         Optional<Conta> contaOptional = contaRepository.findById(contaId);

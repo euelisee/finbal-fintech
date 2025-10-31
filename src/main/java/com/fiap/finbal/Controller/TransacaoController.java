@@ -1,5 +1,6 @@
 package com.fiap.finbal.controller;
 
+import com.fiap.finbal.DTO.TransacaoRequestDTO;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,15 +27,15 @@ public class TransacaoController {
     }
 
     @PostMapping("/transacoes")
-    public ResponseEntity<MensagemResponseDTO> criarTransacao(@RequestBody Transacao transacao) {
+    public ResponseEntity<MensagemResponseDTO> criarTransacao(@RequestBody TransacaoRequestDTO transacaoRequestDTO) {
         try {
-            Transacao novaTransacao = service.salvar(transacao);
+            Transacao novaTransacao = service.registrarTransacao(transacaoRequestDTO);
             MensagemResponseDTO resposta = new MensagemResponseDTO(
                     HttpStatus.CREATED,
                     "Transação cadastrada com sucesso!",
                     novaTransacao);
 
-            return ResponseEntity.status(HttpStatus.OK).body(resposta);
+            return ResponseEntity.status(HttpStatus.CREATED).body(resposta);
         } catch (RuntimeException e) {
             MensagemResponseDTO erro = new MensagemResponseDTO(
                     HttpStatus.BAD_REQUEST,
