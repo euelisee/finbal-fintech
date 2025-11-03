@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.fiap.finbal.Repository.UsuarioRepository;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,8 +33,12 @@ public class ContaService {
 
         Conta novaConta = new Conta();
         novaConta.setNumeroConta(contaDTO.getNumeroConta());
-        novaConta.setAgencia(contaDTO.getAgencia());
-        novaConta.setSaldo(contaDTO.getSaldo());
+        if (contaDTO.getSaldo() != null) {
+            // Usa BigDecimal.valueOf() para garantir a precisão
+            novaConta.setSaldo(BigDecimal.valueOf(contaDTO.getSaldo()));
+        } else {
+            novaConta.setSaldo(BigDecimal.ZERO); // Evita NullPointerException no banco
+        }
         novaConta.setTipoConta(contaDTO.getTipoConta());
 
         novaConta.setUsuario(usuario);
@@ -53,7 +58,6 @@ public class ContaService {
     //Update
     public Optional<Conta> atualizarConta(Long id, Conta detalhesConta){
         return contaRepository.findById(id).map(contaExistente -> {
-            contaExistente.setAgencia(detalhesConta.getAgencia());
             contaExistente.setNumeroConta(detalhesConta.getNumeroConta());
             contaExistente.setSaldo(detalhesConta.getSaldo());
             contaExistente.setTipoConta(detalhesConta.getTipoConta());
