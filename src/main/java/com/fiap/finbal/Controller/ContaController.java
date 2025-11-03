@@ -11,8 +11,8 @@ import com.fiap.finbal.DTO.ContaCreationDTO;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/contas")
-//@CrossOrigin(origins = "http://localhost:5173")
+@RequestMapping("/api/contas") // PREFIXO BASE PARA TODOS OS ENDPOINTS DA CLASSE
+@CrossOrigin(origins = "http://localhost:5173")
 public class ContaController {
     private final ContaService contaService;
 
@@ -21,21 +21,21 @@ public class ContaController {
         this.contaService = contaService;
     }
 
-    //Create
+    //Create: POST /api/contas
     @PostMapping
     public ResponseEntity<Conta> criarConta(@RequestBody ContaCreationDTO contaDto) {
         Conta novaConta = contaService.criarConta(contaDto);
         return new ResponseEntity<>(novaConta, HttpStatus.CREATED);
     }
 
-    //Read
+    //Read All: GET /api/contas
     @GetMapping
     public ResponseEntity<List<Conta>> listarContas() {
         List<Conta> contas = contaService.listarTodasContas();
         return ResponseEntity.ok(contas);
     }
 
-    //Read
+    //Read by ID: GET /api/contas/{id}
     @GetMapping("/{id}")
     public ResponseEntity<Conta> buscarContaPorId(@PathVariable Long id) {
         return contaService.buscarContaPorId(id)
@@ -43,7 +43,7 @@ public class ContaController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    //Update
+    //Update: PUT /api/contas/{id}
     @PutMapping("/{id}")
     public ResponseEntity<Conta> atualizarConta(@PathVariable Long id, @RequestBody Conta contaDetalhes){
         return contaService.atualizarConta(id, contaDetalhes)
@@ -51,7 +51,7 @@ public class ContaController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    //Delete
+    //Delete: DELETE /api/contas/{id}
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarConta(@PathVariable Long id){
         if(contaService.deletarConta(id)){
@@ -59,7 +59,4 @@ public class ContaController {
         }
         return ResponseEntity.notFound().build();
     }
-
-
-    
 }

@@ -1,11 +1,10 @@
 package com.fiap.finbal.DTO;
 
-import java.math.BigDecimal;
+//import java.math.BigDecimal;
 
 public class ContaCreationDTO {
     private String numeroConta;
-    private String agencia;
-    private BigDecimal saldo;
+    private Double saldo;
     private String tipoConta;
     private Long idUsuario;
 
@@ -19,19 +18,11 @@ public class ContaCreationDTO {
         this.numeroConta = numeroConta;
     }
 
-    public String getAgencia() {
-        return agencia;
-    }
-
-    public void setAgencia(String agencia) {
-        this.agencia = agencia;
-    }
-
-    public BigDecimal getSaldo() {
+    public Double getSaldo() {
         return saldo;
     }
 
-    public void setSaldo(BigDecimal saldo) {
+    public void setSaldo(Double saldo) {
         this.saldo = saldo;
     }
 

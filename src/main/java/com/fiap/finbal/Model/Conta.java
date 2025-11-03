@@ -14,8 +14,7 @@ public class Conta {
     private Long idConta;
     @Column(name = "NUMERO_CONTA", nullable = false, unique = true)
     private String numeroConta;
-    @Column(name = "AGENCIA", nullable = false)
-    private String agencia;
+
     @Column(name = "SALDO", nullable = false)
     private BigDecimal saldo;
     @Column(name = "TIPO_CONTA", nullable = false)
@@ -30,8 +29,7 @@ public class Conta {
     //Construtor padrão
     public Conta(){}
 
-    public Conta(String agencia, String numeroConta, BigDecimal saldo, String tipoConta, Long usuario) {
-        this.agencia = agencia;
+    public Conta(String numeroConta, BigDecimal saldo, String tipoConta, Long usuario) {
         this.numeroConta = numeroConta;
         this.saldo = saldo;
         this.tipoConta = tipoConta;
@@ -54,13 +52,7 @@ public class Conta {
         this.numeroConta = numeroConta;
     }
 
-    public String getAgencia() {
-        return agencia;
-    }
 
-    public void setAgencia(String agencia) {
-        this.agencia = agencia;
-    }
 
     public BigDecimal getSaldo() {
         return saldo;
