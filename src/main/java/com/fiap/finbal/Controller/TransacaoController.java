@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.fiap.finbal.model.Transacao;
-import com.fiap.finbal.service.TransacaoService;
+import com.fiap.finbal.Service.TransacaoService;
 import com.fiap.finbal.dto.MensagemResponseDTO;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.fiap.finbal.service;
+package com.fiap.finbal.Service;
 
 
 import com.fiap.finbal.DTO.TransacaoRequestDTO;
@@ -19,7 +19,6 @@ import com.fiap.finbal.Model.TipoTransacao;
 import com.fiap.finbal.Repository.ContaRepository;
 
 
-
 @Service
 public class TransacaoService {
 
@@ -29,7 +28,7 @@ public class TransacaoService {
 
 
     @Autowired
-    public TransacaoService(TransacaoRepository transacaoRepository,  ContaRepository contaRepository, ContaService contaService) {
+    public TransacaoService(TransacaoRepository transacaoRepository, ContaRepository contaRepository, ContaService contaService) {
         this.transacaoRepository = transacaoRepository;
         this.contaRepository = contaRepository;
         this.contaService = contaService;
@@ -39,83 +38,57 @@ public class TransacaoService {
 
         Categoria categoriaEnum;
         try {
-           categoriaEnum = Categoria.valueOf(categoria.toUpperCase());
+            categoriaEnum = Categoria.valueOf(categoria.toUpperCase());
         } catch (IllegalArgumentException | NullPointerException e) {
             System.err.println("Erro ao buscar por categoria: " + categoria + ". A categoria não é válida ou é nula.");
-            return null;
+            return java.util.Collections.emptyList();
         }
 
         return transacaoRepository.findByCategoria(categoriaEnum);
 
     }
 
-    public List<Transacao> ListarTransacoes() {return transacaoRepository.findAll();}
+    public List<Transacao> ListarTransacoes() {
+        return transacaoRepository.findAll();
+    }
 
-    public Optional<Transacao> buscarPorId(Long id) {return transacaoRepository.findById(id);}
+    public Optional<Transacao> buscarPorId(Long id) {
+        return transacaoRepository.findById(id);
+    }
 
 
     @Transactional
     public Transacao registrarTransacao(TransacaoRequestDTO dto) {
-        Long contaId = dto.contaId();
-        if (contaId == null) {
-            throw new RuntimeException("ERRO: O 'contaId' não foi fornecido na requisição.");
+        if (dto.contaId() == null) {
+            throw new IllegalArgumentException("ERRO: O 'contaId' não pode ser nulo.");
         }
+
+        Conta conta = contaService.buscarContaPorId(dto.contaId())
+                .orElseThrow(() -> new RuntimeException("ERRO: Conta com ID " + dto.contaId() + " não encontrada."));
 
         Transacao novaTransacao = new Transacao();
         novaTransacao.setTipo(dto.tipo());
         novaTransacao.setValor(dto.valor());
         novaTransacao.setCategoria(dto.categoria());
         novaTransacao.setData(dto.data());
+        novaTransacao.setConta(conta);
 
-        String resultado;
         switch (novaTransacao.getTipo()) {
             case RECEITA:
-                resultado = executarReceita(novaTransacao, contaId);
+                conta.setSaldo(conta.getSaldo().add(novaTransacao.getValor()));
                 break;
             case DESPESA:
-                resultado = executarDespesa(novaTransacao, contaId);
+                if (conta.getSaldo().compareTo(novaTransacao.getValor()) < 0) {
+                    throw new RuntimeException("Saldo insuficiente na conta " + conta.getId());
+                }
+                conta.setSaldo(conta.getSaldo().subtract(novaTransacao.getValor()));
                 break;
             default:
                 throw new RuntimeException("ERRO: Tipo de transação desconhecido.");
         }
 
-        if (resultado.startsWith("ERRO") || resultado.equals("Saldo insuficiente")) {
-            throw new RuntimeException(resultado);
-        }
-
-        return novaTransacao;
-    }
-    private String executarReceita(Transacao transacao, Long contaId) {
-        Optional<Conta> contaOptional = contaRepository.findById(contaId);
-        if (contaOptional.isEmpty()) {
-            return "ERRO: Conta não encontrada";
-        }
-        Conta conta = contaOptional.get();
-
-        conta.setSaldo(conta.getSaldo().add(transacao.getValor()));
         contaRepository.save(conta);
-        transacao.setConta(conta);
-        transacaoRepository.save(transacao);
-        return "Receita adicionada com sucesso";
+        return transacaoRepository.save(novaTransacao);
     }
-
-    private String executarDespesa(Transacao transacao, Long contaId) {
-        Optional<Conta> contaOptional = this.contaService.buscarContaPorId(contaId);
-        if (contaOptional.isEmpty()) {
-            return "ERRO: Conta não encontrada.";
-        }
-        Conta conta = contaOptional.get();
-
-        if (conta.getSaldo().compareTo(transacao.getValor()) < 0) {
-            return "Saldo insuficiente";
-        }
-
-        conta.setSaldo(conta.getSaldo().subtract(transacao.getValor()));
-        contaRepository.save(conta);
-        transacao.setConta(conta);
-        transacaoRepository.save(transacao);
-        return "Despesa adicionada com sucesso";
-    }
-
 
 }
