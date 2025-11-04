@@ -1,6 +1,7 @@
 package com.fiap.finbal.controller;
 
 import com.fiap.finbal.DTO.TransacaoRequestDTO;
+import com.fiap.finbal.Model.Usuario;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,6 +44,38 @@ public class TransacaoController {
                     null);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
         }
+    }
+
+    @DeleteMapping("/transacoes/{id}")
+    public ResponseEntity<MensagemResponseDTO> deletarTransacao(@PathVariable Long id) {
+        try {
+            service.deletarTransacao(id);
+            MensagemResponseDTO resposta = new MensagemResponseDTO(
+                    HttpStatus.OK,
+                    "Transação deletada com sucesso!",
+                    null);
+            return ResponseEntity.status(HttpStatus.OK).body(resposta);
+        } catch (RuntimeException e) {
+            MensagemResponseDTO erro = new MensagemResponseDTO(
+                    HttpStatus.NOT_FOUND,
+                    e.getMessage(),
+                    null);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(erro);
+        }
+    }
+
+    @PutMapping("/transacoes/{id}")
+    public ResponseEntity<MensagemResponseDTO> atualizarTransacaoPorId(
+            @PathVariable Long id,
+            @RequestBody TransacaoRequestDTO transacaoAtualizadaDTO) {
+
+        Transacao transacao = service.atualizarTransacao(id, transacaoAtualizadaDTO);
+        MensagemResponseDTO resposta = new MensagemResponseDTO(
+                HttpStatus.OK,
+                "Transação atualizada com sucesso!",
+                transacao);
+
+        return ResponseEntity.status(HttpStatus.OK).body(resposta);
     }
 
 
