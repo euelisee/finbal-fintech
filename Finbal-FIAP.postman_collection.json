@@ -98,7 +98,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"nome\": \"Netuno\",\n    \"sobrenome\": \"Canino Oliveira\",\n    \"email\": \"netuno.cachorro@finbal.com\",\n    \"telefone\": \"11998765432\",\n    \"senha\": \"minhasenhaforte123\",\n    \"cpf\": \"12345678900\"\n}",
+							"raw": "{\n    \"numeroConta\": \"1\",\n    \"agencia\": \"2\",\n    \"saldo\": 0,\n    \"telefone\": \"11998765432\",\n    \"senha\": \"minhasenhaforte123\",\n    \"cpf\": \"12345678900\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -207,7 +207,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"nome\": \"Netuno\",\n    \"sobrenome\": \"Canino\",\n    \"email\": \"netuno.cachorro@finbal.com\",\n    \"telefone\": \"11998765432\",\n    \"senha\": \"minhasenhaforte123\",\n    \"cpf\": \"12345678900\"\n}",
+							"raw": "{\n    \"numeroConta\": \"12345-6\",\n    \"saldo\": 1500.75,\n    \"tipoConta\": \"CORRENTE\",\n    \"idUsuario\": 1\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -215,7 +215,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/usuarios",
+							"raw": "http://localhost:8080/api/contas",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -223,7 +223,7 @@
 							"port": "8080",
 							"path": [
 								"api",
-								"usuarios"
+								"contas"
 							]
 						}
 					},
@@ -242,7 +242,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"nome\": \"Netuno\",\n    \"sobrenome\": \"Canino Oliveira\",\n    \"email\": \"netuno.cachorro@finbal.com\",\n    \"telefone\": \"11998765432\",\n    \"senha\": \"minhasenhaforte123\",\n    \"cpf\": \"12345678900\"\n}",
+							"raw": "{\n    \"numeroConta\": \"12345-6\",\n    \"saldo\": 1500.75,\n    \"tipoConta\": \"POUPANÇA\",\n    \"idUsuario\": 1\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -351,7 +351,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"nome\": \"Netuno\",\n    \"sobrenome\": \"Canino\",\n    \"email\": \"netuno.cachorro@finbal.com\",\n    \"telefone\": \"11998765432\",\n    \"senha\": \"minhasenhaforte123\",\n    \"cpf\": \"12345678900\"\n}",
+							"raw": "{\n    \"tipo\": \"DESPESA\",\n    \"valor\": 250.00,\n    \"categoria\": \"ALIMENTACAO\",\n  \"data\":\"04-11-2025\",\n \"contaId\": 1\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -386,7 +386,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"nome\": \"Netuno\",\n    \"sobrenome\": \"Canino Oliveira\",\n    \"email\": \"netuno.cachorro@finbal.com\",\n    \"telefone\": \"11998765432\",\n    \"senha\": \"minhasenhaforte123\",\n    \"cpf\": \"12345678900\"\n}",
+							"raw": "{\n    \"tipo\": \"DESPESA\",\n    \"valor\": 200.00,\n    \"categoria\": \"ALIMENTACAO\",\n  \"data\":\"04-11-2025\",\n \"contaId\": 1\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -421,7 +421,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://localhost:8080/api/contas/21",
+							"raw": "http://localhost:8080/api/transacoes/21",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -429,7 +429,7 @@
 							"port": "8080",
 							"path": [
 								"api",
-								"contas",
+								"transacoes",
 								"21"
 							]
 						}
