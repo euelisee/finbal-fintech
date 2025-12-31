@@ -24,6 +24,10 @@ O sistema permite:
 O projeto segue boas práticas de arquitetura **MVC (Model-View-Controller)** e separação de responsabilidades, garantindo manutenção e escalabilidade.
 
 ---
+## Assista o vídeo de apresentação do projeto: (clique abaixo)
+[![Video de apresentação - projeto FinBal](https://img.youtube.com/vi/TO_9oOGhZ_s/maxresdefault.jpg)](https://www.youtube.com/watch?v=TO_9oOGhZ_s)
+
+---
 
 ## 2. Estrutura do Projeto
 
