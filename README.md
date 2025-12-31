@@ -123,11 +123,13 @@ README.md
 ---
 
 ## 5. Como Rodar o Projeto
+1. Altere o application.properties - localizado em `src/main/resources/application.properties` - adicionando suas credenciais
 
-1. Abra o terminal da IDE ou aplicação direto no diretório e execute:  
+2. Abra o terminal da IDE ou aplicação direto no diretório e execute:  
 ```bash
 mvn clean install && java -jar target/finbal-0.0.1-SNAPSHOT.jar
 ```
+3. clique em run project
 
 4. Acesse a API via Postman ou navegador, endpoints principais:  
 - `/usuarios` – gerenciar usuários  
